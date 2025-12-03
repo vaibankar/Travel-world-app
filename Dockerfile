@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
  
 # Install dependencies
-RUN npm ci
+RUN npm install
  
 # Copy source code
 COPY . .
@@ -25,7 +25,7 @@ WORKDIR /app
 COPY package*.json ./
  
 # Install only production dependencies
-RUN npm ci --only=production
+RUN npm install --only=production
  
 # Copy built files from builder stage
 COPY --from=builder /app/dist ./dist
@@ -39,3 +39,4 @@ EXPOSE 3000
 
 # Start the server
 CMD ["node", "server.js"]
+
