@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travel-world-deployment
+  labels:
+    app: travel-world
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: travel-world
+  template:
+    metadata:
+      labels:
+        app: travel-world
+    spec:
+      containers:
+      - name: travel-world
+        # Make sure to build and tag your image: docker build -t travel-world:v1 .
+        image: travel-world:v1 
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: travel-world-secrets
+              key: API_KEY
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
